@@ -1,0 +1,70 @@
+name: Build & Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install
+        run: npm ci
+
+      - name: Inject runtime IDs
+        run: |
+          sed -i \
+            -e "s/__GA_MEASUREMENT_ID__/${{ vars.GA_MEASUREMENT_ID }}/g" \
+            -e "s/__RC_SITE_KEY__/${{ vars.RC_SITE_KEY }}/g" \
+            -e "s/__CB_ID__/${{ vars.CB_ID }}/g" \
+            -e "s/__BL_ANALYTICS_ID__/${{ vars.BL_ANALYTICS_ID }}/g" \
+            -e "s/__BL_CONTACT_US_API__/${{ vars.BL_CONTACT_US_API }}/g" \
+            -e "s/__UC_PRIVACY_POLICY_ID__/${{ vars.UC_PRIVACY_POLICY_ID }}/g" \
+            *.html *.js *.css
+
+      - name: Verify placeholders replaced
+        run: |
+          ! grep -R --exclude-dir=.git --exclude-dir=.github --exclude-dir=node_modules \
+            "__GA_MEASUREMENT_ID__\|__RC_SITE_KEY__\|__CB_ID__\|__UC_PRIVACY_POLICY_ID__\|__BL_ANALYTICS_ID__\|__BL_CONTACT_US_API__" .
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

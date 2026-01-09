@@ -1,16 +1,6 @@
-# Under Construction
+# Bars and Lines Website
 
-![](screenshot.png)
+This repository contains the company website for **Bars and Lines**.
 
-A simple HTML document designed to be used as the temporary home page of a website.
+It is a small, static site built with plain HTML, CSS and a little JavaScript, and is intended to be hosted on GitHub Pages.
 
-Note that the document language is set to `tr-TR` for Turkish, because that is usually what I need. The paragraph text reads: *"Our website is under construction."*
-
-## Usage
-
-1. Edit `index.html` in order to change the title and the header.
-2. Upload the file to the root directory of your website.
-
-## License
-
-Licensed under the [MIT License](https://opensource.org/licenses/MIT).

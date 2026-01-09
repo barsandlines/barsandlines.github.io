@@ -1,0 +1,10 @@
+{
+  "name": "barsandlines-site",
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && cp -R *.html *.css *.js logo *.png *.jpg *.jpeg *.webp *.svg dist 2>/dev/null || true && rm -rf dist/blank.html && npx esbuild script.js --minify --outfile=dist/script.js && npx esbuild styles.css --minify --outfile=dist/styles.css"
+  }
+}
