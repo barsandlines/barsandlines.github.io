@@ -1,13 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Privacy Policy -->
-    <script
-      id="usercentrics-ppg"
-      privacy-policy-id="__UC_PRIVACY_POLICY_ID__"
-      src="https://policygenerator.usercentrics.eu/api/privacy-policy"
-    ></script>
-
     <script
       id="Cookiebot"
       src="https://consent.cookiebot.com/uc.js"
@@ -31,14 +24,18 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta
-      content="Bars and Lines - Specialist Data, Agentic AI, Enterprise Integration &amp; API Management Consulting"
-      name="description"
+        content="{{ description | default: 
+          "Bars and Lines - Specialist Data, Agentic AI, Enterprise Integration &amp; API Management Consulting" }}"
+        name="description"
     />
-    <title>Bars and Lines | Data &amp; AI Architecture Consulting</title>
+    <title>{{ title | default: "Bars and Lines | Data &amp; AI Architecture Consulting" }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="styles.css" rel="stylesheet" />
+    <link href="/styles.css" rel="stylesheet" />
+
+    <!-- Optional per-page head injection -->
+    {{ head | default: "" }}
   </head>
   <body x-data="{ mobileMenu: false }" class="bg-black text-white">
     <!-- Header -->
@@ -125,12 +122,8 @@
       <a @click="mobileMenu = false" href="/#technology">Technology</a>
     </div>
 
-    <!-- PAGE CONTENT HERE -->
-    <main class="pt-20">
-      <div class="max-w-5xl mx-auto px-6 prose prose-invert">
-        <div class="uc-privacy-policy"></div>
-      </div>
-    </main>
+    <!-- Content -->
+    {{ content }}
 
     <!-- Footer -->
     <footer class="py-12 bg-black border-t border-white/5">
@@ -214,6 +207,6 @@
       </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
   </body>
 </html>

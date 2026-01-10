@@ -32,6 +32,8 @@ jobs:
 
       - name: Inject runtime IDs
         run: |
+          shopt -s globstar nullglob
+
           sed -i \
             -e "s|__GA_MEASUREMENT_ID__|${{ vars.GA_MEASUREMENT_ID }}|g" \
             -e "s|__RC_SITE_KEY__|${{ vars.RC_SITE_KEY }}|g" \
@@ -39,7 +41,7 @@ jobs:
             -e "s|__BL_ANALYTICS_ID__|${{ vars.BL_ANALYTICS_ID }}|g" \
             -e "s|__BL_CONTACT_US_API__|${{ vars.BL_CONTACT_US_API }}|g" \
             -e "s|__UC_PRIVACY_POLICY_ID__|${{ vars.UC_PRIVACY_POLICY_ID }}|g" \
-            *.html *.js *.css
+            src/**/*.html src/**/*.js src/**/*.css
 
       - name: Verify placeholders replaced
         run: |
