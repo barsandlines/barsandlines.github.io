@@ -1,8 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css2?family=Cabin:wght@700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap");
 
 :root {
   --gold: #6c5a14;
-  --gold-semi: #8E771A;
+  --gold-semi: #8e771a;
   --gold-bright: #dfbc34;
   --dark-bg: #0a0a0a;
   --card-bg: #161616;
@@ -12,6 +16,12 @@ body {
   font-family: "Lato", sans-serif;
   background-color: var(--dark-bg);
   color: #e2e2e2;
+}
+
+/* fix lighthouse warnings */
+:where(h1) {
+  margin-block: 0.67em;
+  font-size: 2em;
 }
 
 h1,

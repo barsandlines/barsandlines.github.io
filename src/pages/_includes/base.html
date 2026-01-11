@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- improve load speed -->
+    <link rel="preconnect" href="https://consent.cookiebot.com" crossorigin>
+    <link rel="dns-prefetch" href="//consent.cookiebot.com">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="dns-prefetch" href="//unpkg.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="preload" as="style" href="/styles.css">
+    <link rel="preload" as="script" href="/script.js">
+    <link rel="preload" as="script" href="https://consent.cookiebot.com/uc.js">
+    <link rel="preload" as="script" href="https://unpkg.com/lucide@latest">
     <script
       id="Cookiebot"
       src="https://consent.cookiebot.com/uc.js"
@@ -28,8 +39,7 @@
       "Bars and Lines - Specialist Data, Agentic AI, Enterprise Integration &amp; API Management Consulting" %}
     <meta name="description" content="{{ metaDescription }}" />
     <title>{{ title | default: "Bars and Lines | Data &amp; AI Architecture Consulting" }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer="" src="https://unpkg.com/lucide@latest"></script>
     <script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="/styles.css" rel="stylesheet" />
 
