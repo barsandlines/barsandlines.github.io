@@ -8,7 +8,8 @@
       data-blockingmode="auto"
       type="text/javascript"
     ></script>
-    <script async
+    <script
+      async
       type="text/plain"
       data-cookieconsent="statistics"
       src="https://www.googletagmanager.com/gtag/js?id=__GA_MEASUREMENT_ID__"
@@ -23,11 +24,9 @@
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta
-        content="{{ description | default: 
-          "Bars and Lines - Specialist Data, Agentic AI, Enterprise Integration &amp; API Management Consulting" }}"
-        name="description"
-    />
+    {% assign metaDescription = description | default:
+      "Bars and Lines - Specialist Data, Agentic AI, Enterprise Integration &amp; API Management Consulting" %}
+    <meta name="description" content="{{ metaDescription }}" />
     <title>{{ title | default: "Bars and Lines | Data &amp; AI Architecture Consulting" }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -38,6 +37,8 @@
     {{ head | default: "" }}
   </head>
   <body x-data="{ mobileMenu: false }" class="bg-black text-white">
+    <!-- WCAG compliant skip link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- Header -->
     <header class="fixed w-full z-50 glass-panel">
       <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -45,6 +46,8 @@
           <div class="w-10 h-10 gold-gradient rounded flex items-center justify-center">
             <svg
               class="lucide lucide-bar-chart-3 text-white w-6 h-6"
+              role="img"
+              aria-label="Bar chart logo"
               data-lucide="bar-chart-3"
               fill="none"
               height="24"
@@ -70,9 +73,16 @@
           <a class="hover:text-[var(--gold-bright)] transition-colors" href="/#technology">Technology</a>
           <a class="text-[var(--gold-bright)] border-b border-[var(--gold)]" href="/#consulting">Work With Us</a>
         </nav>
-        <button @click="mobileMenu = !mobileMenu" class="md:hidden text-white">
+        <button
+          type="button"
+          @click="mobileMenu = !mobileMenu"
+          class="md:hidden text-white"
+          aria-label="Show menu"
+        >
           <svg
             class="lucide lucide-menu"
+            aria-hidden="true"
+            focusable="false"
             data-lucide="menu"
             fill="none"
             height="24"
@@ -99,7 +109,12 @@
       x-show="mobileMenu"
       x-transition=""
     >
-      <button @click="mobileMenu = false" class="self-end">
+      <button
+        type="button"
+        @click="mobileMenu = false"
+        class="self-end"
+        aria-label="Close menu"
+      >
         <svg
           class="lucide lucide-x w-10 h-10"
           data-lucide="x"
@@ -123,21 +138,25 @@
     </div>
 
     <!-- Content -->
-    {{ content }}
+    <main class="pt-20" id="main-content">
+      {{ content }}
+    </main>
 
     <!-- Footer -->
     <footer class="py-12 bg-black border-t border-white/5">
       <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
         <div class="text-left">
           <div class="font-cabin text-white text-lg font-bold mb-2">BARS AND LINES LIMITED</div>
-          <p class="text-xs text-gray-500 max-w-sm">
+          <p class="text-xs text-gray-400 max-w-sm">
             71-75 Shelton Street, London, UK, WC2H 9JQ Company Number: 13595712. Registered in England & Wales.
           </p>
         </div>
         <div class="flex gap-6">
-          <a class="text-gray-500 hover:text-[var(--gold-bright)] transition-colors" href="#"
+          <a class="text-gray-400 hover:text-[var(--gold-bright)] transition-colors" aria-label="linkedin" href="#"
             ><svg
               class="lucide lucide-linkedin"
+              aria-hidden="true"
+              focusable="false"
               data-lucide="linkedin"
               fill="none"
               height="24"
@@ -153,9 +172,11 @@
               <rect height="12" width="4" x="2" y="9"></rect>
               <circle cx="4" cy="4" r="2"></circle></svg
           ></a>
-          <a class="text-gray-500 hover:text-[var(--gold-bright)] transition-colors" href="#"
+          <a class="text-gray-400 hover:text-[var(--gold-bright)] transition-colors" aria-label="twitter" href="#"
             ><svg
               class="lucide lucide-twitter"
+              aria-hidden="true"
+              focusable="false"
               data-lucide="twitter"
               fill="none"
               height="24"
@@ -171,9 +192,11 @@
                 d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
               ></path></svg
           ></a>
-          <a class="text-gray-500 hover:text-[var(--gold-bright)] transition-colors" href="#"
+          <a class="text-gray-400 hover:text-[var(--gold-bright)] transition-colors" aria-label="email" href="#"
             ><svg
               class="lucide lucide-mail"
+              aria-hidden="true"
+              focusable="false"
               data-lucide="mail"
               fill="none"
               height="24"
@@ -192,7 +215,7 @@
 
         <div class="flex flex-col items-end text-right gap-2">
           <!-- Legal links above, right-aligned -->
-          <div class="flex gap-4 text-[10px] md:text-[11px] tracking-widest uppercase text-gray-500">
+          <div class="flex gap-4 text-[10px] md:text-[11px] tracking-widest uppercase text-gray-400">
             <a href="/privacy.html" class="hover:text-[var(--gold-bright)] transition-colors"> Privacy </a>
             <a href="javascript:window.Cookiebot && Cookiebot.renew()" class="hover:text-[var(--gold-bright)] transition-colors">
               Cookies
@@ -200,7 +223,7 @@
           </div>
 
           <!-- Copyright below -->
-          <div class="text-xs text-gray-600">
+          <div class="text-xs text-gray-400">
             Copyright © <span id="copyright-year"></span> Bars and Lines Limited - All Rights Reserved.
           </div>
         </div>

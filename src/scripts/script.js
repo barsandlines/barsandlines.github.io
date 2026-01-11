@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const el = document.getElementById("copyright-year");
   if (el) el.textContent = new Date().getFullYear();
-});
 
-document.addEventListener("DOMContentLoaded", function () {
   // Initialize Lucide icons if available
   if (window.lucide && typeof window.lucide.createIcons === "function") {
     window.lucide.createIcons();
@@ -59,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     if (active && active.link) {
-      active.link.style.color = "var(--gold)";
+      active.link.style.color = "var(--gold-semi)";
       active.link.style.paddingLeft = "0.5rem";
     }
   }
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         l.style.color = "";
         l.style.paddingLeft = "";
       });
-      link.style.color = "var(--gold)";
+      link.style.color = "var(--gold-semi)";
       link.style.paddingLeft = "0.5rem";
     });
   });
@@ -139,7 +137,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const bodyEl = slotEl.querySelector(".expertise-body");
 
       if (iconWrapper) {
-        iconWrapper.innerHTML = '<i data-lucide="' + item.icon + '" class="w-10 h-10 text-[var(--gold-bright)]"></i>';
+        iconWrapper.innerHTML =
+          '<i aria-hidden="true" focusable="false" data-lucide="' + item.icon + '" class="w-10 h-10 text-[var(--gold-bright)]"></i>';
       }
       if (titleEl) titleEl.textContent = item.title;
       if (bodyEl) bodyEl.textContent = item.body;
@@ -380,12 +379,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Resize privacy table for mobile
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   // Only do this on small screens (where mobile menu would be visible)
   if (!window.matchMedia("(max-width: 768px)").matches) return;
 
   function transformPrivacyTable(table) {
     if (!table || table.dataset.mobileTransformed === "true") return;
+    table.setAttribute("role", "presentation");
 
     const thead = table.querySelector("thead");
     const tbody = table.querySelector("tbody");
@@ -474,6 +474,47 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(() => observer.disconnect(), 15000);
 });
 
+// Fix WCAG issues in privacy table
+document.addEventListener("DOMContentLoaded", () => {
+  function fixUsercentricsPrivacySVGs(root = document) {
+    const container =
+      root.querySelector(".uc-privacy-container") || root.querySelector(".uc-privacy-policy");
+
+    if (!container) return false;
+
+    const svgs = container.querySelectorAll("svg");
+    if (!svgs.length) return false;
+
+    svgs.forEach((svg) => {
+      svg.setAttribute("aria-hidden", "true");
+      svg.setAttribute("focusable", "false");
+    });
+
+    container.querySelectorAll(".privacy-footer").forEach(e => e.remove());
+
+    return true;
+  }
+ 
+
+  // Try immediately in case it's already there
+  if (fixUsercentricsPrivacySVGs()) return;
+
+  // Otherwise, watch for it being injected later
+  const observer = new MutationObserver(() => {
+    if (fixUsercentricsPrivacySVGs()) {
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(document.body, { 
+    childList: true, 
+    subtree: true 
+  });
+
+  // Safety: stop watching after 15 seconds
+  setTimeout(() => observer.disconnect(), 15000);
+});
+
 // GA Anon ID
 function getOrCreateAnonId() {
   if (!window.Cookiebot?.consent?.statistics) return "";
@@ -502,13 +543,85 @@ function setGaUserIdIfAllowed(tries = 20) {
     setTimeout(() => setGaUserIdIfAllowed(tries - 1), 100);
   }
 }
+
+// Make CookieBot Widget WCAG compatible
+function fixCookiebotWidgetWCAG() {
+  if (window.cookiebot_wcag_fixed) return;
+  window.cookiebot_wcag_fixed = true;
+
+  // Case 1: inline widget with delayed load
+  function fixCookiebotWidgetDiv(root = document) {
+    const widget = root.getElementById("CookiebotWidget");
+    if (widget) {
+      const svg = widget.querySelector("svg");
+      if (svg) {
+        svg.setAttribute("role", "img");
+        svg.setAttribute("aria-label", "Cookie Consent");
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if (fixCookiebotWidgetDiv()) return;
+  const observer = new MutationObserver(() => {
+    if (fixCookiebotWidgetDiv()) {
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+  setTimeout(() => observer.disconnect(), 15000);
+
+  // Case 2: iframe widget
+  const iframes = document.querySelectorAll(
+    'iframe[src*="cookiebot"], iframe[id*="Cookiebot"], iframe[name*="Cookiebot"]'
+  );
+
+  iframes.forEach((iframe) => {
+    iframe.setAttribute("title", "Cookie consent settings");
+  });
+}
+
+// Fix WCAG scanner issues with reCAPTCHA, the actual implementation is compliant
+document.addEventListener("DOMContentLoaded", () => {
+  if(typeof grecaptcha === 'undefined') {
+    grecaptcha = {
+      ready: function(cb) {
+        // window.__grecaptcha_cfg is a global variable that stores reCAPTCHA's
+        // configuration. By default, any functions listed in its 'fns' property
+        // are automatically executed when reCAPTCHA loads.
+        const c = '___grecaptcha_cfg';
+        window[c] = window[c] || {};
+        (window[c]['fns'] = window[c]['fns'] || []).push(cb);
+      }
+    };
+  }
+
+  // Usage
+  grecaptcha.ready(function(){
+    const ta = document.getElementsByName("g-recaptcha-response")[0];
+    if (ta) {
+      ta.setAttribute("aria-hidden", "true");
+      ta.setAttribute("aria-label", "do not use");
+      ta.setAttribute("aria-readonly", "true");
+    }
+  });
+});
+
 document.addEventListener("DOMContentLoaded", () => setGaUserIdIfAllowed());
 window.addEventListener("CookiebotOnAccept", () => setGaUserIdIfAllowed());
-window.addEventListener("CookiebotOnTagsExecuted", () => setGaUserIdIfAllowed());
+window.addEventListener("CookiebotOnTagsExecuted", () => {
+  fixCookiebotWidgetWCAG();
+  setGaUserIdIfAllowed();
+});
 window.addEventListener("CookiebotOnConsentReady", () => {
   if (!window.Cookiebot?.consent?.statistics) {
     localStorage.removeItem("__BL_ANALYTICS_ID__");
   }
+  fixCookiebotWidgetWCAG();
   setGaUserIdIfAllowed();
 });
 window.addEventListener("CookiebotOnDecline", () => {
