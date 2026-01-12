@@ -130,9 +130,13 @@ head: '<link rel="dns-prefetch" href="//www.google.com"><link rel="preload" as="
         </div>
       </div>
       <div class="text-xs text-gray-400 font-mono">
-        // INTEGRATION_LAYER_ACTIVE<br />
-        // DATA_PIPELINE_STABLE<br />
-        // AGENT_LOGIC_CONNECTED
+        <section role="img" aria-label="Integration layer active. Data pipeline stable. Agent logic connected">
+          <span aria-hidden="true">
+            // INTEGRATION_LAYER_ACTIVE<br />
+            // DATA_PIPELINE_STABLE<br />
+            // AGENT_LOGIC_CONNECTED
+          </span>
+        </section>
       </div>
     </div>
   </div>
@@ -711,10 +715,13 @@ head: '<link rel="dns-prefetch" href="//www.google.com"><link rel="preload" as="
               Consulting on
               <span class="text-[var(--gold-bright)]">Agentic AI</span>
             </h2>
-            <p class="text-gray-400 leading-relaxed">
-              We do more than build chatbots. We architect
-              <b>autonomous AI agents</b> that plug into your integration estate — ESB, APIs, Events and iPaaS — to orchestrate workflows,
-              manage decisions and act safely inside your existing governance model.
+            <section
+              aria-label="We do more than build chatbots. We architect autonomous AI agents that plug into your integration estate — ESB, APIs, Events and iPaaS — to orchestrate workflows, manage decisions and act safely inside your existing governance model."
+              role="presentation"
+            ></section>
+            <p class="text-gray-400 leading-relaxed" aria-hidden="true">
+              We do more than build chatbots. We architect <b>autonomous AI agents</b> that plug into your integration estate — ESB, APIs,
+              Events and iPaaS — to orchestrate workflows, manage decisions and act safely inside your existing governance model.
             </p>
             <ul class="space-y-4">
               <li class="flex items-center gap-3">
